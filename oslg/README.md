@@ -2,7 +2,7 @@
 
 It is a boot manager based on the old burg project and uses GNU GRUB technology.
 
-This version of grub aims to replace the bootloader terminal and combine the graphics with letters to give some style to the startup.
+This version of grub aims to replace the bootloader style terminal and combine the graphics with letters to give some style to the startup.
 
 ## Installation
 	git --clone git@github.com:frerd7/Project.git
