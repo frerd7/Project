@@ -1,0 +1,81 @@
+Source: oslg
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Build-Depends: debhelper,
+               dh-python,
+               help2man,
+               make,
+               gcc,
+               gcc-multilib, 
+               bison,
+               autoconf,
+               automake, 
+               gettext, 
+               ruby,
+               python3,
+               python3-distutils-extra
+
+Package: oslg
+Architecture: i386
+Depends: ${shlibs:Depends},oslg-pc (>=1.98-ubuntu16),oslg-core (>=1.98-ubuntu16),${misc:Depends}
+Description: Operating System Loader in Grub (Dummy Package)
+	This is a dummy transitional package to handle OSLG upgrades.			
+
+Source: oslg-uefi
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Package: oslg-uefi
+Architecture: amd64
+Depends: ${shlibs:Depends}, oslg-efi (>=1.98-ubuntu16), oslg-fonts-efi (>=1.98-ubuntu16),${misc:Depends}
+Description: Operating System Loader in Grub (Dummy Package)
+	This is a dummy transitional package to handle OSLG upgrades.
+
+Source: oslg-pc
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Package: oslg-pc
+Architecture: i386
+Depends: ${shlibs:Depends}, oslg-core (>=1.98-ubuntu16), oslg-fonts (>=1.98-ubuntu16),${misc:Depends}
+Description: Operating System Loader in Grub (PC/BIOS firmware)
+   OSLG is a combination of BURG and GRUB 2
+	-New graphic menu system, support themes colors and styles
+	-GRUB4DOS Fuctions
+	-Use new object format module files
+	-Support UEFI firmware
+
+Source: oslg-efi
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Package: oslg-efi
+Architecture: amd64
+Depends: ${shlibs:Depends}, oslg-core-efi (>=1.98-ubuntu16), oslg-fonts-efi (>=1.98-ubuntu16), ${misc:Depends}
+Description: Operating System Loader in Grub (BIOS/UEFI firmware)
+   OSLG is a combination of BURG and GRUB 2
+	-New graphic menu system, support themes colors and styles
+	-GRUB4DOS Fuctions
+	-Use new object format module files
+	-Support UEFI firmware
+
+Source: oslg-core-efi
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Package: oslg-core-efi
+Architecture: amd64
+Depends: ${shlibs:Depends},oslg-efi (>=1.98-ubuntu16) ,${misc:Depends}
+Description: Operating System Loader in Grub (Core Files)
+   This package contains core files
+
+Source: oslg-core
+Section: admin
+Priority: extra
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Package: oslg-core
+Architecture: i386
+Depends: ${shlibs:Depends},oslg-pc (>=1.98-ubuntu16),${misc:Depends}
+Description: Operating System Loader in Grub (Core Files)
+   This package contains core files

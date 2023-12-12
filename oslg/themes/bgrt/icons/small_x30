@@ -1,0 +1,28 @@
++class
+{
+  -windows { image = "$$/small_30windows.png" }
+  -linux { image = "$$/small_30linux.png" }
+  -ubuntu { image = "$$/small_30ubuntu.png" }
+  -debian { image = "$$/small_30debian.png" }
+  -suse { image = "$$/small_30suse.png" }
+  -freebsd { image = "$$/small_30freebsd.png" }
+  -macosx { image = "$$/small_30osx.png" }
+  -gentoo { image = "$$/small_30gentoo.png" }
+  -linuxmint { image = "$$/small_30linuxmint.png" }
+  -mandrake { image = "$$/small_30mandrake.png" }
+  -arch { image = "$$/small_30arch.png" }
+  -centos { image = "$$/small_30centos.png" }
+  -fedora { image = "$$/small_30fedora.png" }
+  -mepis { image = "$$/small_30mepis.png" }
+  -pclinuxos { image = "$$/small_30pclinuxos.png" }
+  -puppy { image = "$$/small_30puppy.png" }
+  -redhat { image = "$$/small_30redhat.png" }
+  -sabayon { image = "$$/small_30sabayon.png" }
+  -slackware { image = "$$/small_30slackware.png" }
+  -zenix { image = "$$/small_30zenix.png" }
+  -molinux { image = "$$/small_30molinux.png" }
+  -image { image = "$$/setup_x30.png" }
+  -poweroff { image = "$$/poweroff_x30.png" }
+  -reboot {image = "$$/reboot_x30.png" }
+}
+

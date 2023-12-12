@@ -1,0 +1,254 @@
+#!/usr/local/bin/qmlapp
+
+import QtQuick 2.5
+import QtQuick.Controls 1.0
+import QtMultimedia 5.8
+import QtQuick.Dialogs 1.2
+
+ApplicationWindow {
+    id: applicationWindow
+    visible: true
+    width: 500
+    height: 300
+
+    // JS Function
+    property int total: 0
+
+    function displayTotalDuration() {
+       Settings.sendNotification("Video playback finished Total video duration: " +  formatTime(mediaPlayer.duration));
+    }
+
+    function formatTime(ms) {
+       var seconds = Math.floor(ms / 1000);
+       var minutes = Math.floor(seconds / 60);
+       seconds %= 60;
+       return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+     }
+
+    function retrocedeVideo(seconds) {
+        var newPosition = mediaPlayer.position - seconds * 1000;
+        mediaPlayer.seek(Math.max(newPosition, 0));
+    }
+
+    function nextVideo(seconds) {
+        var newPosition = mediaPlayer.position + seconds * 1000;
+        mediaPlayer.seek(Math.max(newPosition, 0));
+    }
+   // endif JS
+
+   // timeout video
+   Timer {
+        id: timer
+        interval: 1000
+        running: mediaPlayer.playbackState === MediaPlayer.Playing
+        onTriggered: {
+            if (mediaPlayer.playbackState === MediaPlayer.Playing) {
+                console.log("Current Time: " + mediaPlayer.position / 1000 + " seconds");
+                var newPosition = mediaPlayer.position - 5000;
+                mediaPlayer.seek(Math.max(newPosition, 0));
+                progressBar.value = mediaPlayer.position / mediaPlayer.duration;
+            }
+         }
+     }
+
+   Connections {
+       target: mediaPlayer
+       onStatusChanged: {
+           if (mediaPlayer.status === MediaPlayer.LoadedStatus) {
+               progressBar.maximumValue = mediaPlayer.duration;
+           }
+         }
+       }
+  // endif timeout video
+
+   FileDialog {
+           id: fileDialog
+           title: "Open File"
+           folder: shortcuts.home
+           nameFilters: ["Video file (*.mp4)"]
+
+           onAccepted: {
+               mediaPlayer.source = fileDialog.fileUrls[0]
+               mediaPlayer.play();
+               Settings.sendNotification("Playing " + fileDialog.fileUrls[0]);
+           }
+
+           onRejected: {
+               console.log("File dialog canceled")
+           }
+       }
+
+    Item {
+        id: item1
+        anchors.fill: parent
+
+        MediaPlayer {
+            id: mediaPlayer
+            onDurationChanged: {
+                     total = mediaPlayer.duration;
+                  }
+            onStatusChanged: {
+                if (status === MediaPlayer.EndOfMedia) {
+                   displayTotalDuration();
+               }
+            }
+         }
+
+        VideoOutput {
+            id: videoOutput
+            anchors.fill: parent
+            source: mediaPlayer
+           }
+
+        Rectangle {
+            id: rectangle
+            y: 250
+            height: 50
+            color: "#b8b4b4"
+            border.color: "#998f8f"
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+
+            Button {
+                id: button
+                x: 47
+                y: 17
+                width: 38
+                height: 25
+                smooth: true
+                enabled: true
+                iconSource: mediaPlayer.playbackState === MediaPlayer.PlayingState ?
+                                "qrc:/icon/pause.png" :
+                                "qrc:/icon/play.png"
+                onClicked: {
+                    if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+                        mediaPlayer.pause();
+                        timer.stop();
+                       } else {
+                        mediaPlayer.play();
+                        timer.start();
+                    }
+                }           
+            }
+
+            Rectangle {
+                id: rectangle1
+                x: 8
+                y: 0
+                width: 38
+                height: 18
+                color: "#b8b4b4"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: formatTime(mediaPlayer.position)
+                }
+
+                Button {
+                    id: button2
+                    x: 0
+                    y: 17
+                    width: 38
+                    height: 25
+                    iconSource: "qrc:/icon/rewind-1.png"
+
+                    onClicked: {
+                       retrocedeVideo(5);
+                    }
+                }
+
+                Button {
+                    id: button3
+                    x: 78
+                    y: 17
+                    width: 38
+                    height: 25
+                    iconSource: "qrc:/icon/rewind-2.png"
+
+                    onClicked: {
+                       nextVideo(5);
+                     }
+                  }
+                }
+
+               Rectangle {
+                   id: rectangle2
+                   x: 456
+                   y: 0
+                   width: 44
+                   height: 18
+                   color: "#b8b4b4"
+                   anchors.right: parent.right
+                   anchors.rightMargin: 0
+
+                   Text {
+                       id: textElement
+                       anchors.centerIn: parent
+                       text: formatTime(total)
+                    }
+                  }
+
+               Slider {
+                   id: progressBar
+                   y: 3
+                   height: 12
+                   anchors.left: parent.left
+                   anchors.leftMargin: 46
+                   anchors.right: parent.right
+                   anchors.rightMargin: 46
+                   value: mediaPlayer.position / mediaPlayer.duration
+                   onValueChanged: {
+                      if (mediaPlayer.playbackState === MediaPlayer.Playing || mediaPlayer.playbackState === MediaPlayer.Paused) {
+                          var newPosition = progressBar.value * mediaPlayer.duration;
+                          mediaPlayer.seek(newPosition);
+                          }
+                       }
+                    }
+
+               Rectangle {
+                   id: rectangle3
+                   x: 442
+                   y: 17
+                   width: 50
+                   height: 25
+                   color: "#b8b4b4"
+                   anchors.right: parent.right
+                   anchors.rightMargin: 8
+
+                   Button {
+                       id: button1
+                       x: 17
+                       y: 0
+                       width: 38
+                       height: 25
+                       iconSource: "qrc:/icon/fullscreen.png"
+                       onClicked: {
+                                 if (applicationWindow.visibility === ApplicationWindow.FullScreen) {
+                                     applicationWindow.visibility = ApplicationWindow.Windowed
+                                 } else {
+                                    applicationWindow.visibility = ApplicationWindow.FullScreen
+                          }
+                       }
+                    }
+                 }
+
+                   Button {
+                       id: button4
+                       x: 421
+                       y: 17
+                       width: 38
+                       height: 25
+                       anchors.right: parent.right
+                       anchors.rightMargin: 41
+                       iconSource: "qrc:/icon/fileopen.png"
+                       onClicked: {
+                          fileDialog.open()
+                   }
+               }
+           }
+      }
+}

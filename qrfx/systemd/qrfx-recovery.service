@@ -1,0 +1,19 @@
+[Unit]
+Description=Initializing Qt Recovery Mode From Xorg
+DefaultDependencies=no
+Conflicts=shutdown.target
+Wants=systemd-udevd-control.socket systemd-udevd.service systemd-udev-trigger.service basic.target sysinit.target
+After=systemd-udevd-control.socket systemd-udevd.service systemd-udev-trigger.service basic.target sysinit.target
+
+[Service]
+Environment=HOME=/root
+WorkingDirectory=/root
+ExecStartPre=-/bin/dmesg --console-off
+ExecStart=-/lib/qrfx/qrfxp
+PIDFile=/var/run/qrfx.pid
+StandardInput=tty-force
+StandardOutput=inherit
+StandardError=inherit
+KillMode=no
+IgnoreSIGPIPE=yes
+SendSIGHUP=yes

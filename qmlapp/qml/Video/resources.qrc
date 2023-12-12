@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>./icon/fileopen.png</file>
+        <file>./icon/fullscreen.png</file>
+        <file>./icon/pause.png</file>
+        <file>./icon/play.png</file>
+        <file>./icon/rewind-2.png</file>
+        <file>./icon/rewind-1.png</file>
+    </qresource>
+</RCC>

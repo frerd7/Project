@@ -1,0 +1,61 @@
+#!/bin/sh -e
+# boot-install Bootloader command
+#  OSLG  -- Operating System Loader in GRUB 
+#  Copyright (C) 2021,2022,2023,2024 Free Software Foundation, Inc.
+#
+#  OSLG is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  OSLG is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with OSLG.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+if [ "x$EUID" = "x" ] ; then
+  EUID=`id -u`
+fi
+
+if [ "$EUID" != 0 ] ; then
+  root=f
+  case "`uname 2>/dev/null`" in
+    CYGWIN*)
+      # Cygwin: Assume root if member of admin group
+      for g in `id -G 2>/dev/null` ; do
+	case $g in
+	  0|544) root=t ;;
+	esac
+      done ;;
+  esac
+  if [ $root != t ] ; then
+    echo "$0: run this as root" >&2
+    exit 1
+  fi
+fi
+
+target_machine() {
+    uname -m
+}
+
+m=$(target_machine "x")
+
+echo "Machine: $m"
+
+if test -d "/sys/firmware/efi";
+then
+ oslg-install --fatdir=/boot/efi --devdir=/ 
+else
+ oslg-install --root-directory=/ /dev/sda
+fi
+
+echo "Intallation ready and without errors."
+echo "To see the changes restart."
+
+#bye
+exit 0

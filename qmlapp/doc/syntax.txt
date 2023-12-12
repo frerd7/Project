@@ -1,0 +1,65 @@
+# FQmlapp is a program that seeks to 
+# integrate the qml language with the 
+# Gnome linux desktop
+# Just like other programs, it is in its beta base, 
+# so some errors will appear, which will be solved as the program is updated.
+# This program is subject to a Gnu Linux public license which provides for 
+# its sale and if it is done you should talk to the creator.
+
+[Guide to use the program]:
+	Step 1:
+ 	      Create an qml.txt file, remember that this file must contain the following;
+              module: Specify the initial directory that contains the name of the module to load.
+              appname: Object name either application or project.
+              window: Type of window manager to use, it can be a host that uses OpenGL render, or it can be an engine that is used by qml.
+
+         [Nota]:
+             If no window manager is selected the program decides which one to use.
+             The qml.txt file must always go in a particular directory as well as the script.
+
+        [Example]:
+                 # example
+                 module: /path/to/$dir or ~/$dir or ./$dir
+                 appname: Example 
+                 window: host or engine
+                 version: number
+                 image: path to icon
+
+        [Nota]:
+           Do not annotate rare symbols will give an error.
+           Don't put the directory name, just put the initial directory
+
+       		Step 2:
+            	Create a file with the syntax followed by qml data:
+            	 [Example]: window host
+                    #!/usr/bin/qmlapp #do not change this route just place it and that's it.
+                     
+                     import QtQuick 2.0
+
+                     Item {
+                        width: 700
+                        height: 500
+                       }
+
+               	[Example]: window engine
+                    #!/usr/bin/qmlapp  #do not change this route just place it and that's it.
+                     
+                    import QtQuick.Window 2.2
+
+                     Window {
+                        visible: true
+                        width: 700
+                        height: 500
+                       }
+
+                 [Nota]:
+                  
+                  do not change the interpreter position or direction.
+
+        launch from terminal or a desktop file.
+                       
+ 
+                  
+       
+
+

@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>exec_script.png</file>
+        <file>go-previous.png</file>
+        <file>icon-info.png</file>
+        <file>icon-next.png</file>
+        <file>icon-package.png</file>
+        <file>icon-poweroff.png</file>
+        <file>icon-updateboot.png</file>
+        <file>network</file>
+        <file>network-error.png</file>
+        <file>network-transmit-receive.png</file>
+        <file>system-software-update.png</file>
+        <file>ubuntu-mate-logo.png</file>
+        <file>user-trash.png</file>
+    </qresource>
+</RCC>

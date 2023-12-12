@@ -1,0 +1,20 @@
+# FQmlapp is a program that seeks to 
+# integrate the qml language with the 
+# Gnome linux desktop
+# Just like other programs, it is in its beta base, 
+# so some errors will appear, which will be solved as the program is updated.
+# This program is subject to a Gnu Linux public license which provides for its sale and if it is done you should talk to the creator.
+
+
+[Nota]:
+     You can make any contribution or adaptation.
+
+The name of its creator is:
+       Frederick Valdez
+
+For contact:
+      frederickgvaldez@gmail.com.
+
+And thanks for the attention.
+
+

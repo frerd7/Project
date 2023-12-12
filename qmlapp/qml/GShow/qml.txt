@@ -1,0 +1,9 @@
+# Configuration file.
+# Not to run.
+# It is a file extension qmlapp.
+
+appname: USplashShow
+version: 1.0
+window: host
+
+
