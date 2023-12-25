@@ -1,8 +1,8 @@
-#Youtube Client Web
+# Youtube Client Web
 
 It is a client program that is used to upload to YouTube on the client side.
 
-##How to install and run
+## How to install and run
 	Step 1: Download the project that is above in the description with.
 			git clone https://github.com/frerd7/Project/tree/main/gtk_youtube
 	Step 2: Open the terminal.
