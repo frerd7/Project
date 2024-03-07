@@ -1,0 +1,8 @@
+debian/changelog /usr/share/doc/oslg
+debian/copyright /usr/share/doc/oslg
+debian/script /usr/share/bug/oslg
+debian/README /usr/share/doc/oslg
+/AUTHORS /usr/share/doc/oslg
+/NEWS /usr/share/doc/oslg
+/TODO /usr/share/doc/oslg
+

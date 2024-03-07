@@ -1,0 +1,153 @@
+include "./menus"
+
+container-body {
+    top_left = "$$/images/container-tl.png"
+    top = "$$/images/container-t.png"
+    top_right = "$$/images/container-tr.png"
+    left = "$$/images/container-l.png"
+    background = "$$/images/container-bg.png"
+    right = "$$/images/container-r.png"
+    bottom_left = "$$/images/container-bl.png"
+    bottom = "$$/images/container-b.png"
+    bottom_right = "$$/images/container-br.png"
+}
+
+screen {
+   background = "$$/desktop.png,,#000000/light-gray/black"
+
+ panel {
+      halign = center
+      attach_vcenter = -25%
+      height = 20
+      min_width = 70
+
+      image {
+	 halign=center
+         attach_vcenter = 0
+         attach_hcenter = 0
+         image = "$$/bgrt.png,,#000000/light-gray/black"
+        }
+      }
+
+ panel {
+      halign = center
+      attach_vcenter = 6
+      min_width = 30
+      class = container-body
+      height = 41%
+      margin_top = 3
+      margin_left = 4
+      max_width = 120
+
+      panel {
+        id = __menu__
+        popup = abs
+        extend = 1
+        halign = center
+        valign = top
+        max_items = 8
+     }
+   }
+
+ panel {
+    width = 36%
+    halign = center
+    attach_vcenter = 15
+    margin_left = 3
+    halign = center
+    id = __timeout__
+    border_size = 1/0
+
+        progressbar {
+          width = 80%
+          image = "$$/images/pb_fg.png,tiling:$$/images/pb_bg.png,tiling"
+        }
+
+        text {
+          halign = center
+          text = "Booting Operating System ..."
+          class = hotkey_name
+       }
+    }
+}
+
+template_menuitem {
+  panel {
+    parameters = "class=image.class:title=text.text"
+    direction = left_to_right
+    margin_size = 3/0
+    space = 1
+    image {}
+    text {
+      valign = center
+      font = "Fixed Bold 13"
+    }
+  }
+}
+
+class {
+  frame {
+    top_left = ",,#B08458/brown/black,#0x250F:,,#FFFFFF/light-gray/black,#0x2554"
+    top = ",tiling,#B08458/brown/black,#0x2501:,,#FFFFFF/light-gray/black,#0x2550"
+    top_right = ",,#B08458/brown/black,#0x2513:,,#FFFFFF/light-gray/black,#0x2557"
+    left = ",tiling,#B08458/brown/black,#0x2503:,,#FFFFFF/light-gray/black,#0x2551"
+    right = ",tiling,#B08458/brown/black,#0x2503:,,#FFFFFF/light-gray/black,#0x2551"
+    bottom_left = ",,#B08458/brown/black,#0x2517:,,#FFFFFF/light-gray/black,#0x255A"
+    bottom = ",tiling,#B08458/brown/black,#0x2501:,,#FFFFFF/light-gray/black,#0x2550"
+    bottom_right = ",tiling,#B08458/brown/black,#0x251B:,,#FFFFFF/light-gray/black,#0x255D"
+  }
+
+ hotkey_title {
+    color = "#FFFFFF/light-gray"
+    font = "smoothansi Regular 13"
+  }
+
+  hotkey_name {
+    color = "#B08458/brown"
+    font = "smoothansi Regular 13"
+  }
+
+text {
+    color = "#B08458/brown/black:#FFFFFF/light-gray/black"
+  }
+
+  term {
+    color = "#B08458/brown/black:#FFFFFF/light-gray/black"
+  }
+
+  edit {
+    color = "#B08458/brown/black:#FFFFFF/light-gray/black"
+  }
+
+  password {
+    color = "#B08458/brown/black:#FFFFFF/light-gray/black"
+  }
+}
+
+
+menu { 
+   Setup {
+      halign = center
+      margin_size = 6/0
+      direction = left_to_right
+      space = 3
+  
+   Shutdown {
+         command = "halt"
+         class = poweroff
+         }
+
+   Restart {
+        command = "reboot"
+        class = reboot
+       }
+
+    FirmwareSetup {
+         command = "fwsetup"
+       }
+      
+    }
+ }
+
+
+include "./icons/small_x30"

@@ -1,0 +1,7 @@
+[Unit]
+Description=Qt Recovery Mode From Xorg
+DefaultDependencies=no
+Wants=qrfx-recovery.service
+After=qrfx-recovery.service
+Conflicts=shutdown.target
+AllowIsolate=yes

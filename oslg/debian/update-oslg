@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+if test -d "/sys/firmware/efi";
+then
+ oslg-install --fatdir=/boot/efi --devdir=/ 
+else
+ oslg-mkconfig --root-dir=/ --output=/boot/oslg/oslg.cfg 
+fi
+
+#exit
+exit 0

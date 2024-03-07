@@ -1,0 +1,25 @@
+onkey {
+  e = "*menu_edit dialog_edit text=command"
+  c = "*menu_popup term_window"
+  2 = "*menu_popup two_term"
+  f1 = "menu_popup help"
+  h = "menu_popup help"
+  f2 = "select_menu"
+  t = "select_menu"
+  i = "menu_popup about"
+  f = "toggle_fold"
+  n = "ui_next_class"
+  w = "ui_next_class windows"
+  u = "ui_next_class ubuntu"
+  q = "ui_quit"
+  f6 = ui_next_anchor
+  f7 = "menu_popup -r :group"
+  f8 = menu_toggle_mode
+  f9 = halt
+  f10 = reboot
+  f12 = fwsetup
+}
+
+mapkey {
+  f5 = ctrl-x
+}

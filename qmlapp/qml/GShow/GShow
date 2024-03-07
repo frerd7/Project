@@ -1,0 +1,85 @@
+#!/usr/bin/qmlapp
+
+import QtQuick 2.0
+import QtQuick.Window 2.2
+import QtQuick 2.7
+
+Item {
+    id: item
+    width: 700
+    height: 500
+    
+      Timer {
+        interval: 10000; running: true; repeat: false
+        onTriggered: Qt.quit()
+     }
+
+         Rectangle {
+             id: screen
+             anchors.fill: parent
+             color: "black"
+
+                 Rectangle {
+                     id: rectangle
+                     width: 34
+                     height: 32
+                     color: "transparent"
+                     anchors.horizontalCenter: parent.horizontalCenter
+                     anchors.verticalCenter: parent.verticalCenter
+
+                     Image {
+                         source: "file:./animation-0001.png"
+                     }
+
+                RotationAnimation on rotation
+                {
+                    loops: Animation.Infinite
+                    from: 0
+                    to: 140
+                }
+               }
+
+         Rectangle {
+             id: rectangle1
+             y: 55
+             width: 134
+             height: 132
+             color: "transparent"
+             anchors.verticalCenterOffset: -88
+             anchors.verticalCenter: rectangle.verticalCenter
+             anchors.horizontalCenterOffset: 0
+             anchors.horizontalCenter: parent.horizontalCenter
+             
+             Image {
+                 id: image1
+                 x: 2
+                 y: -2
+                 width: 121
+                 height: 128
+                 source: "file:./bgrt-fallback.png"
+             }
+         }
+         
+         Rectangle {
+             id: rectangle2
+             x: 270
+             y: 290
+             width: 237
+             height: 110
+             color: "transparent"
+             anchors.bottom: parent.bottom
+             anchors.bottomMargin: 0
+             anchors.horizontalCenter: parent.horizontalCenter
+             
+             Image {
+                 id: image
+                 x: 8
+                 y: 23
+                 width: 218
+                 height: 82
+                 source: "file:./ubuntu-logo.png"
+             }
+         }
+         }
+}
+

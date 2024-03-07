@@ -1,0 +1,140 @@
+# -*- makefile -*-
+
+# Used by various components.  These rules need to precede them.
+script/lexer.c_DEPENDENCIES = grub_script.tab.h
+
+sbin_UTILITIES += grub-emu
+util/grub-emu.c_DEPENDENCIES = grub_emu_init.h
+grub_emu_SOURCES = commands/minicmd.c commands/cat.c commands/cmp.c	\
+	commands/configfile.c commands/echo.c commands/help.c		\
+	commands/handler.c commands/ls.c commands/test.c 		\
+	commands/search_wrap.c commands/search_file.c			\
+	commands/search_label.c commands/search_uuid.c			\
+	commands/blocklist.c commands/hexdump.c                         \
+        commands/date.c			                        	\
+	commands/halt.c commands/reboot.c commands/loadenv.c		\
+	commands/gptsync.c commands/probe.c commands/xnu_uuid.c		\
+	commands/password.c commands/keystatus.c commands/terminal.c	\
+	commands/true.c commands/password_pbkdf2.c			\
+        \
+        io/gzio.c                                                       \
+	kern/device.c kern/disk.c kern/dl.c kern/elf.c kern/env.c       \
+	kern/err.c kern/list.c kern/handler.c				\
+	kern/command.c kern/corecmd.c commands/extcmd.c	kern/file.c	\
+	kern/fs.c commands/boot.c kern/main.c kern/misc.c kern/parser.c	\
+	kern/partition.c kern/term.c					\
+	kern/rescue_reader.c kern/rescue_parser.c                       \
+        \
+        partmap/apple.c partmap/msdos.c partmap/sun.c	                \
+	partmap/gpt.c					                \
+	\
+        disk/host.c disk/loopback.c disk/scsi.c				\
+        fs/fshelp.c                                                     \
+        \
+        normal/autofs.c normal/handler.c normal/main.c			\
+	normal/crypto.c normal/term.c					\
+	menu/normal/cmdline.c menu/normal/color.c menu/normal/main.c	\
+	menu/normal/menu.c menu/normal/menu_entry.c			\
+	menu/normal/menu_text.c                                         \
+        util/console.c util/hostfs.c util/grub-emu.c util/misc.c	\
+	util/hostdisk.c util/getroot.c	                                \
+        \
+        fs/affs.c fs/cpio.c  fs/fat.c fs/ext2.c fs/hfs.c		\
+	fs/hfsplus.c fs/udf.c fs/jfs.c fs/minix.c		        \
+	fs/ntfs.c fs/ntfscomp.c fs/reiserfs.c fs/sfs.c			\
+	fs/ufs.c fs/ufs2.c fs/xfs.c fs/afs.c fs/afs_be.c		\
+	fs/befs.c fs/befs_be.c fs/tar.c					\
+	\
+        lib/arg.c lib/auth.c lib/autolist.c lib/completion.c lib/crc.c	\
+        hook/datehook.c lib/cmos_datetime.c                             \
+	lib/datetime.c lib/envblk.c lib/hexdump.c		        \
+	lib/history.c lib/print_ucs4.c lib/menu_entry.c lib/misc.c	\
+	lib/tree.c lib/uitree.c	lib/crypto.c lib/charset.c lib/context.c \
+        lib/libgcrypt-grub/cipher/md5.c                                 \
+	lib/libgcrypt-grub/cipher/sha512.c lib/pbkdf2.c                 \
+        \
+        video/video.c video/fb/video_fb.c video/fb/fbblit.c             \
+	video/fb/fbfill.c video/fb/fbutil.c commands/videotest.c        \
+	video/bitmap.c video/bitmap_scale.c video/readers/tga.c 	\
+	video/readers/jpeg.c video/readers/png.c font/font_cmd.c        \
+	font/font.c term/gfxterm.c io/bufio.c				\
+	\
+        menu/ext/main.c menu/ext/widget.c menu/ext/dialog.c		\
+	menu/ext/region.c menu/ext/text_region.c menu/ext/gfx_region.c	\
+	menu/ext/data_type.c ui/ui_image.c ui/ui_text.c ui/ui_progressbar.c \
+        ui/ui_circular_progress.c ui/ui_password.c ui/coreui_emu.c ui/ui_panel.c \
+        ui/screen.c commands/loadcfg.c                                  \
+	\
+	gfxmenu/gfxmenu.c gfxmenu/model.c gfxmenu/view.c 		\
+	gfxmenu/icon_manager.c gfxmenu/theme_loader.c 			\
+	gfxmenu/widget-box.c gfxmenu/gui_canvas.c 			\
+	gfxmenu/gui_circular_progress.c gfxmenu/gui_box.c 		\
+	gfxmenu/gui_label.c gfxmenu/gui_list.c gfxmenu/gui_image.c 	\
+	gfxmenu/gui_progress_bar.c gfxmenu/gui_util.c 			\
+	gfxmenu/gui_string_util.c gfxmenu/named_colors.c trigtables.c   \
+	\
+	script/main.c script/execute.c script/function.c		\
+	script/lexer.c script/script.c grub_script.tab.c	        \
+	grub_emu_init.c gnulib/progname.c                         				              		
+grub_emu_CFLAGS += -Wno-error -I$(srcdir)/lib/libgcrypt_wrap
+
+
+ifeq ($(host_cpu), i386)
+grub_emu_SOURCES += commands/i386/cpuid.c
+endif
+
+grub_emu_LDFLAGS = $(LIBCURSES)
+
+ifeq ($(enable_grub_emu_usb), yes)
+grub_emu_SOURCES += disk/i386/usbms.c util/usb.c bus/usb/usb.c	\
+		commands/usbtest.c
+grub_emu_LDFLAGS += $(LIBCURSES) $(LIBUSB)
+endif
+
+ifeq ($(enable_grub_emu_sdl), yes)
+grub_emu_SOURCES += util/sdl.c
+grub_emu_CFLAGS += $(INCSDL)
+grub_emu_LDFLAGS += $(LIBSDL)
+endif
+
+ifeq ($(enable_grub_emu_pci), yes)
+grub_emu_SOURCES += util/pci.c commands/lspci.c
+grub_emu_LDFLAGS += $(LIBPCIACCESS)
+endif
+
+grub_emu_init.lst: geninit.sh $(filter-out grub_emu_init.c,$(grub_emu_SOURCES))
+	$(call quiet-command,rm -f $@; grep GRUB_MOD_INIT $(filter %.c,$^) /dev/null > $@,"  GEN   $@")
+DISTCLEANFILES += grub_emu_init.lst
+
+grub_emu_init.h: grub_emu_init.lst $(filter-out grub_emu_init.c,$(grub_emu_SOURCES)) geninitheader.sh
+	$(call quiet-command,rm -f $@; sh $(srcdir)/geninitheader.sh $< > $@,"  GEN   $@")
+DISTCLEANFILES += grub_emu_init.h
+
+grub_emu_init.c: grub_emu_init.lst $(filter-out grub_emu_init.c,$(grub_emu_SOURCES)) geninit.sh grub_emu_init.h
+	$(call quiet-command,rm -f $@; sh $(srcdir)/geninit.sh $< $(filter %.c,$^) > $@,"  GEN   $@")
+DISTCLEANFILES += grub_emu_init.c
+
+# FIXME: this could be shared with common.rmk
+
+trigtables.c: gentrigtables
+	./gentrigtables > $@
+DISTCLEANFILES += trigtables.c
+gentrigtables: gentrigtables.c
+	$(CC) -o $@ $^ $(CPPFLAGS) -lm
+DISTCLEANFILES += gentrigtables
+
+# For grub-mkfont.
+ifeq ($(enable_grub_mkfont), yes)
+bin_UTILITIES += grub-mkfont
+grub_mkfont_SOURCES = gnulib/progname.c util/grub-mkfont.c util/misc.c \
+	kern/misc.c kern/err.c
+grub_mkfont_CFLAGS = $(freetype_cflags)
+grub_mkfont_LDFLAGS = $(freetype_libs)
+endif
+
+grub_script.tab.c grub_script.tab.h: script/parser.y
+	$(call quiet-command,$(YACC) -d -p grub_script_yy -b grub_script $(srcdir)/script/parser.y,"  YACC  $@")
+DISTCLEANFILES += grub_script.tab.c grub_script.tab.h
+
+bin_UTILITIES += grub-bin2h
+grub_bin2h_SOURCES = gnulib/progname.c util/bin2h.c

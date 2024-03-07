@@ -1,0 +1,19 @@
+#!/usr/bin/make -f 
+
+export DEB_BUILD_OPTIONS=nocheck
+
+%:
+	dh $@  --parallel --fail-missing --with python3
+
+override_dh_auto_configure:
+		./autogen.sh
+		dh_auto_configure --
+
+override_dh_strip:
+	dh_strip --exclude=debian
+
+override_dh_auto_install:
+	mkdir -p ./debian/oslg-tmp
+	help2man ./debian/update-oslg -o ./debian/update-oslg.8 --no-discard-stderr
+	$(MAKE) install DESTDIR=./debian/oslg-tmp
+	dh_auto_install --sourcedir=debian

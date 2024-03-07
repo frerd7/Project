@@ -1,0 +1,4 @@
+/debian/xglrun.sh /usr/bin
+/debian/README.gz /usr/share/doc/xglshow
+/obj-i686-linux-gnu/bin/xglshow /usr/bin
+/obj-i686-linux-gnu/bin/xglshowf /usr/bin

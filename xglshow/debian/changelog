@@ -1,0 +1,11 @@
+xglshow (1.0-ub16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Thu, 8 Aug 2022 00:39:31 +0400
+
+xglshow-64 (1.0-ub16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Thu, 8 Aug 2022 00:39:31 +0400

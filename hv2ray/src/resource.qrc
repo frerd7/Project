@@ -1,0 +1,10 @@
+
+  <!DOCTYPE RCC><RCC version="1.0">
+  <qresource prefix="/">
+      <file>icon/about-hv2ray.png</file>
+      <file>icon/about-title.png</file>
+      <file>icon/about.ico</file>
+      <file>icon/document-open.svg</file>
+      <file>icon/play.png</file>
+  </qresource>
+  </RCC>

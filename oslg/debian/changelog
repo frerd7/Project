@@ -1,0 +1,35 @@
+oslg (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400
+
+oslg-pc (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400
+
+oslg-core (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400
+
+oslg-uefi (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ --  gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400
+
+oslg-core-efi (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400
+
+oslg-efi (1.98-ubuntu16) xenial; urgency=medium
+
+	* Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- gateway (gpg identification key) <gateway@Gateway-E4300> Wed, 03 Aug 2022  12:06:31   +0400

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <action id="org.freedesktop.policykit.pkexec.hv2ray">
+    <description>Run programs as another user</description>
+    <message>Authentication is required for the program /usr/bin/hv2ray</message>  
+      <message xml:lang="es">Se requiere Autenticacion para el programa /usr/bin/hv2ray</message>
+    <icon_name>/home/gateway/qt/cmake/desktop/icon-hv2ray.png</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/hv2ray</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+</policyconfig>

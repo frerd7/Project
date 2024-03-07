@@ -1,0 +1,14 @@
+Operating System Loader in Grub (OSLG) based on grub version 1.98.
+instructions to install:
+
+1- Open terminal and type sudo apt-get install oslg.
+2- Type in terminal oslg-install --root-directory={devicepath} if it is EFI (x86_64-oslg-install --fatdir={efidevice} --root-dir={path to boot}).
+3- And ready.
+
+Please visit the official web page of GRUB 2, for more information.
+The URL is <http://www.gnu.org/software/grub/grub.html>.
+
+For now, there is not much documentation yet. Please look at the GRUB
+Wiki <http://grub.enbug.org> for testing procedures.
+
+

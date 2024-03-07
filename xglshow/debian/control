@@ -1,0 +1,29 @@
+Source: xglshow
+Section: x11
+Priority: optional
+Maintainer: gateway (gpg identification key) <gateway@Gateway-E4300>
+Build-Depends: debhelper,
+               cmake,
+               cmake-data,
+               dh-python,
+               libc6,
+               libgdk-pixbuf2.0-dev,
+               libglib2.0-dev,
+               libglfw3-dev,
+               libglu1-mesa-dev,
+               libgl1-mesa-dev,
+               pkg-config,
+               python3
+Standards-Version: 1.0
+
+Package: xglshow
+Architecture: i386
+Depends: ${shlibs:Depends}, xglshow-themes (>=1.0) ,libglfw3 (>=3.1.2-3), libgl1-mesa-glx (=18.0.5-0ubuntu0~16.04.1), libglu1-mesa (>=9.0.0-2.1), libglib2.0-0 (>=2.48.2-0ubuntu4.1), libgdk-pixbuf2.0-0, libc6, lightdm,${misc:Depends}
+Description: Animation on Server X Started from Session Manager LightDM
+
+Package: xglshow-64
+Section: x11
+Priority: optional
+Architecture: amd64
+Depends: ${shlibs:Depends}, xglshow-themes (>=1.0) ,libglfw3 (>=3.1.2-3), libgl1-mesa-glx (=18.0.5-0ubuntu0~16.04.1), libglu1-mesa (>=9.0.0-2.1), libglib2.0-0 (>=2.48.2-0ubuntu4.1), libgdk-pixbuf2.0-0, libc6, lightdm,${misc:Depends}
+Description: Animation on Server X Started from Session Manager LightDM

@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --parallel --fail-missing
+
+override_dh_auto_configure:
+	# Debian defines CMAKE_INSTALL_SYSCONFDIR as /usr/etc, which is wrong.
+	# So until Debian bug 719148 is fixed, do it ourselves.
+	dh_auto_configure -- -DCMAKE_INSTALL_SYSCONFDIR=/etc -DCMAKE_INSTALL_PREFIX=/usr

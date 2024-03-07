@@ -1,0 +1,17 @@
+Source: hv2ray
+Section: gnome
+Priority: optional
+Maintainer: Minerd (New Password) <minerd@minerd-ClassMate>
+Build-Depends: debhelper,
+               cmake,
+               cmake-data,
+               libnotify-dev,
+               qtbase5-dev,
+               qtbase5-dev-tools,
+Standards-Version: 1.0.0
+
+Package: hv2ray
+Architecture: any
+Depends: ${shlibs:Depends}, libqt5widgets5, libqt5gui5, libqt5core5a ,libnotify4,${misc:Depends}
+Description: V2ray Client based on the V project
+

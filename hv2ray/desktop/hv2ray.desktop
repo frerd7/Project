@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=HV2ray
+GenericName=Program tha servers as v2ray client
+Comment=V2ray client
+Icon=/usr/share/icons/hicolor/128x128/apps/icon-hv2ray.png
+StartupNotify=true
+Exec=starthv2ray
+Terminal=false
+Type=Application
+Categories=GNOME;Qt;Network;WebBrowser;
+

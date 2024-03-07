@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+
+build-stamp: configure-stamp  
+	\t    dh_testdir
+	\t    touch build-stamp
+	\t    dh_installdirs
+	\t    dh_installdeb
+
+%:
+	dh $@ --parallel --fail-missing --with python3 --buildsystem=cmake
+
+override_dh_auto_configure:
+	# Debian defines CMAKE_INSTALL_SYSCONFDIR as /usr/etc, which is wrong.
+	# So until Debian bug 719148 is fixed, do it ourselves.
+	dh_auto_configure -- -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_SYSCONFDIR=/etc -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config
+
+override_dh_strip:
+	dh_strip --exclude=debian

@@ -1,0 +1,8 @@
+# Configuration file.
+# Not to run.
+# It is a file extension qmlapp.
+
+appname: Video
+version: 1.0
+window: host
+image: ./video.png

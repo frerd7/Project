@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pkexec --user root env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR hv2ray
+

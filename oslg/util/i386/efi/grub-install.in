@@ -1,0 +1,295 @@
+#!/bin/bash
+
+# Install GRUB on your drive.
+# Copyright (C) 1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009  Free Software Foundation, Inc.
+#
+# GRUB is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# GRUB is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
+
+# Initialize some variables.
+
+transform="@program_transform_name@"
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+sbindir=@sbindir@
+bindir=@bindir@
+libdir=@libdir@
+PACKAGE_NAME=@PACKAGE_NAME@
+PACKAGE_TARNAME=@PACKAGE_TARNAME@
+PACKAGE_VERSION=@PACKAGE_VERSION@
+target_cpu=@target_cpu@
+platform=@platform@
+host_os=@host_os@
+grub_mkdevicemap=${sbindir}/`echo oslg-mkdevicemap | sed ${transform}`
+grub_probe=${sbindir}/`echo oslg-probe | sed ${transform}`
+grub_mkimage=${bindir}/`echo oslg-mkimage | sed ${transform}`
+grub_editenv=${bindir}/`echo oslg-editenv | sed ${transform}`
+grub_mkconfig=${sbindir}/`echo oslg-mkconfig | sed ${transform}`
+
+recheck=no
+
+dd=dd
+mkfs=mkfs.ext2
+mount=mount
+bs="bs=19000k"
+count="count=1"
+tmpdir=/tmp
+device="if=/dev/zero"
+file="of=${tmpdir}/boot.disk"
+opt="-t ext2 -o loop"
+oslg_dir=/mnt
+memdisk="${tmpdir}/boot.disk"
+pkglibdir=${libdir}/`echo ${PACKAGE_TARNAME}/${target_cpu}-${platform} | sed ${transform}`
+oslg_prefix=${oslg_dir}/`echo boot/oslg`
+
+# Usage: usage
+# Print the usage.
+usage () {
+    cat <<EOF
+Usage: $0 [OPTION]
+
+  --fatdir=DIR            install the EFI images in the selected directory 
+  --devdir=DIR            look for the boot directory
+  --no-floppy             do not probe any floppy drive
+  --recheck               probe a device map even if it already exists
+  -h, --help              print this message and exit
+  -v, --version           print the version information and exit
+
+Report bugs to <fredericklgvaldez@gmail.com>.
+EOF
+}
+
+# Check the arguments.
+for option in "$@"; do
+    case "$option" in
+    -h | --help)
+	usage
+	exit 0 ;;
+    -v | --version)
+	echo "$0 (${PACKAGE_NAME} ${package_version})"
+	exit 0 ;;
+        --no-floppy)
+	no_floppy="--no-floppy" ;;
+        --recheck)
+	recheck=yes ;;
+        --fatdir=*)
+   rootdir=`echo "$option" | sed 's/--fatdir=//'` 
+        ;;
+         --devdir=*)
+   devicedir=`echo "$option" | sed 's/--devdir=//'` 
+        ;;
+    -*)
+	echo "Unrecognized option \`$option'" 1>&2
+	usage
+	exit 0
+	;;
+    esac
+done 
+
+if [ "x$EUID" = "x" ] ; then
+  EUID=`id -u`
+fi
+
+if [ "$EUID" != 0 ] ; then
+  root=f
+  case "`uname 2>/dev/null`" in
+    CYGWIN*)
+      # Cygwin: Assume root if member of admin group
+      for g in `id -G 2>/dev/null` ; do
+	case $g in
+	  0|544) root=t ;;
+	esac
+      done ;;
+  esac
+  if [ $root != t ] ; then
+    echo "$0: You must run this as root" >&2
+    exit 1
+  fi
+fi
+
+bootdir=${rootdir}/boot
+grubdir=${bootdir}/`echo oslg | sed ${transform}`
+
+device_map=${grubdir}/device.map
+
+test -d "$grubdir" || mkdir -p "${grubdir}" || exit 1
+
+# If --recheck is specified, remove the device map, if present.
+if test $recheck = yes; then
+    rm -f $device_map
+fi
+
+
+# Create the device map file if it is not present.
+if test -f "$device_map"; then
+    :
+else
+    # Create a safe temporary file.
+    test -n "$mklog" && log_file=`$mklog`
+
+    $grub_mkdevicemap --device-map=$device_map $no_floppy || exit 1
+fi
+
+# Auto-detect the filesystem.
+fs_fat=`$grub_probe --target=fs --device-map=${device_map} ${grubdir}`
+fs_fat_device=`$grub_probe --target=device --device-map=${device_map} ${grubdir}`
+
+if test "x$fs_fat" = xfat; then :; 
+
+echo "Found: ${fs_fat_device} filesystem type ${fs_fat}."
+
+else
+    echo "Device: ${fs_fat_device} Detected partition is not a partition in EFI.
+So that it can be an EFI partition the filesystem must be fat." 1>&2
+    exit 1
+fi
+
+# Create memdisk.
+efidir=${rootdir}/EFI/BOOT
+
+test -d "${efidir}" || mkdir -p "${efidir}" || exit 1
+
+$dd $device $file $bs $count
+$mkfs -F ${memdisk} && $mount $opt ${memdisk} $oslg_dir
+
+test -d "$oslg_prefix" || mkdir -p "$oslg_prefix" || exit 1
+
+# Copy the GRUB images to the GRUB directory.
+for file in ${oslg_prefix}/*.mod ${oslg_prefix}/*.lst ${oslg_prefix}/*.img ${oslg_prefix}/efiemu??.o; do
+    if test -f $file && [ "`basename $file`" != menu.lst ]; then
+	rm -f $file || exit 1
+    fi
+done
+for file in ${pkglibdir}/*.mod ${pkglibdir}/*.lst; do
+    cp -f $file ${oslg_prefix} || exit 1
+done
+
+# Copy theme
+
+theme=${prefix}/share/oslg
+fontdd=${prefix}/share/oslg
+
+cp -R ${theme}/themes ${oslg_prefix} 2>/dev/null || :
+cp -R ${fontdd}/fonts ${oslg_prefix} 2>/dev/null || :
+
+
+# Copy gettext files
+mkdir -p ${oslg_prefix}/locale/
+for file in ${oslg_prefix}/locale/*.mo ${pkglibdir}/locale/*.mo; do
+    if test -f "$file"; then
+        cp -f "$file" ${oslg_prefix}/locale/
+    fi
+done
+
+# generated init.cfg 
+echo "Generated init preload mod ..."
+
+cfg=init.cfg
+video="video"
+video_fb="video_fb"
+pci="pci"
+efi_fb="efi_fb"
+lib="lib"
+txtrgn="txtrgn" 
+widget="widget"
+bitmap_scale="bitmap_scale"
+efi_vars="efivars"
+nmenu="nmenu"
+font="font"
+bitmap="bitmap"
+gfxmenu="gfxmenu"
+gfxrgn="gfxrgn"
+gfxterm="gfxterm"
+
+if test -f "${pkglibdir}/$video.mod"; 
+then
+   if test -f "${pkglibdir}/$video_fb.mod"; then
+    echo "$video: $video_fb" > ${oslg_prefix}/$cfg
+   fi
+fi
+
+if test -f "${pkglibdir}/$bitmap_scale.mod"; 
+then
+   if test -f "${pkglibdir}/$bitmap.mod"; then
+    echo "$bitmap_scale: $bitmap" >> ${oslg_prefix}/$cfg
+   fi
+fi
+
+if test -f "${pkglibdir}/$pci.mod"; 
+then
+   if test -f "${pkglibdir}/$efi_fb.mod"; then
+    echo "$efi_fb: $pci" >> ${oslg_prefix}/$cfg
+   fi
+fi
+
+if test -f "${pkglibdir}/$lib.mod"; 
+then
+   if test -f "${pkglibdir}/$efi_vars.mod"; then
+    echo "$efi_vars: $lib" >> ${oslg_prefix}/$cfg
+   fi
+fi
+
+if test -f "${pkglibdir}/$nmenu.mod"; 
+then
+   if test -f "${pkglibdir}/$gfxterm.mod"; then
+    echo "$gfxterm: $nmenu" >> ${oslg_prefix}/$cfg
+   fi
+fi
+
+if test -f "${pkglibdir}/$font.mod"; then
+     if test -f "${pkglibdir}/$gfxmenu.mod"; then
+        echo "$gfxmenu: $font" >> ${oslg_prefix}/$cfg
+       fi
+fi
+
+if test -f "${pkglibdir}/$bitmap.mod"; then
+     if test -f "${pkglibdir}/$gfxrgn.mod"; then
+        echo "$gfxrgn: $font" >> ${oslg_prefix}/$cfg
+       fi
+fi
+
+if test -f "${pkglibdir}/$gfxterm.mod"; then
+        echo "$gfxterm: $bitmap" >> ${oslg_prefix}/$cfg 
+    
+   fi
+
+if test -f "${pkglibdir}/$txtrgn.mod"; 
+then
+   if test -f "${pkglibdir}/$widget.mod"; then
+    echo "$txtrgn: $widget" >> ${oslg_prefix}/$cfg
+   fi
+fi
+
+# Write device to a variable so we don't have to traverse /dev every time.
+
+if ! test -f ${oslg_prefix}/oslgenv; then
+    $grub_editenv ${oslg_prefix}/oslgenv create
+fi
+
+export PREFIX="${oslg_prefix}"
+
+# generated grub-mkconfig
+$grub_mkconfig --root-dir=${devicedir} --output=${oslg_prefix}/oslg.cfg && umount /${oslg_dir}
+
+$grub_mkimage -d ${pkglibdir} -m ${memdisk} -p "" -o ${efidir}/bootx64.efi && rm ${memdisk} && rm -R ${bootdir}
+
+if test -d "/boot/efi/EFI/ubuntu"; then
+ rm -R /boot/efi/EFI/ubuntu
+fi
+
+#bye
+echo "Installation finished. No error reported."
+
+raise Exception("Root Directory was not specified")   
+
