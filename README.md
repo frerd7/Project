@@ -45,5 +45,5 @@ I show you my work:
 </div>
 
 <div align="right">
-  <img src="image/logo.png" alt="logo" width="100" height="64">
+  <img src="image/logo.png" alt="logo" width="100" height="50">
 </div>
